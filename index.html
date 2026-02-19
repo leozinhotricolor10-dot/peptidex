@@ -414,7 +414,7 @@
 
     /* Prevent text overflow everywhere */
     * { word-break: break-word; }
-    .home-title { word-break: normal; hyphens: auto; }
+    .home-title { word-break: keep-all; hyphens: none; }
 
     /* Smooth scrolling */
     html { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
@@ -597,6 +597,29 @@
   body.menu-open #calc-view { pointer-events: none; }
   #sidebar { touch-action: pan-y; pointer-events: auto !important; }
   #sidebar * { pointer-events: auto !important; }
+
+  @media (max-width: 768px) {
+    /* Fix home title - prevent hyphenation */
+    .home-title {
+      font-size: 2rem !important;
+      line-height: 1.1 !important;
+      word-break: keep-all !important;
+      hyphens: none !important;
+      letter-spacing: -1px !important;
+    }
+
+    /* Wizard result cards - 1 per row on mobile */
+    #wz-result-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Wizard result title */
+    #wz-result-title {
+      font-size: 1.4rem !important;
+      word-break: keep-all !important;
+      hyphens: none !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -6694,7 +6717,13 @@
   }
 
   function showPeptide(id, el) {
-    closeMobileSidebar();
+    // Remove lock immediately before navigating
+    document.body.classList.remove('menu-open');
+    document.getElementById('sidebar')?.classList.remove('mobile-open');
+    document.getElementById('mobile-sidebar-overlay')?.classList.remove('show');
+    const btn = document.getElementById('sidebar-btn');
+    if (btn) btn.textContent = '📋';
+
     document.getElementById('home-view').style.display = 'none';
     document.getElementById('compare-view').style.display = 'none';
     document.getElementById('calc-view').style.display = 'none';
@@ -6707,6 +6736,17 @@
     if (el) el.classList.add('active');
     window.scrollTo(0, 0);
   }
+
+  // Add touchend listeners to peptide items for reliable mobile tap
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.peptide-item').forEach(item => {
+      item.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        const id = this.dataset.id;
+        if (id) showPeptide(id, this);
+      }, { passive: false });
+    });
+  });
 
   function filterPeptides(val) {
     const q = val.toLowerCase();
