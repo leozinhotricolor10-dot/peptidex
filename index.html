@@ -268,7 +268,7 @@
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--accent); }
 
-  #mobile-sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 155; backdrop-filter: blur(2px); }
+  #mobile-sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 140; }
   #mobile-sidebar-overlay.show { display: block; }
 
   @media (max-width: 768px) {
@@ -281,7 +281,7 @@
       background: #0b1520; border-left: 1px solid var(--border);
       flex-direction: column; gap: 0; padding: 20px 0;
       transform: translateX(100%); transition: transform 0.3s ease;
-      z-index: 150;
+      z-index: 200;
     }
     .nav-links.mobile-open { transform: translateX(0); }
     .nav-links a { padding: 14px 24px; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
@@ -293,10 +293,10 @@
     aside {
       position: fixed; top: 64px; left: 0; bottom: 0; width: 85%; max-width: 300px;
       transform: translateX(-100%); transition: transform 0.3s ease;
-      z-index: 160; overflow-y: auto;
-      background: #060d14;
-      border-right: 1px solid var(--border);
-      box-shadow: 4px 0 24px rgba(0,0,0,0.6);
+      z-index: 200; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      background: #0e1c2a;
+      border-right: 1px solid rgba(0,229,195,0.15);
+      box-shadow: 6px 0 32px rgba(0,0,0,0.8);
     }
     aside.mobile-open { transform: translateX(0); }
 
@@ -582,6 +582,15 @@
   .cat-card-count { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--accent); }
   /* search highlight */
   .peptide-item.hidden { display: none; }
+
+  @media (max-width: 768px) {
+    aside .sidebar-title { color: rgba(0,229,195,0.7); }
+    aside .peptide-item { color: #8aaabb; }
+    aside .peptide-item:hover { color: #cde; }
+    aside .category-header { color: #b0c8d4; }
+    aside .sidebar-search input { color: #cde; }
+    aside .sidebar-search input::placeholder { color: #557788; }
+  }
 </style>
 </head>
 <body>
@@ -7537,16 +7546,19 @@
       links.classList.remove('mobile-open');
       btn.classList.remove('open');
       overlay.classList.remove('show');
+      document.body.style.overflow = '';
     } else {
       links.classList.add('mobile-open');
       btn.classList.add('open');
       overlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
     }
   }
   function closeMobileMenu() {
     document.getElementById('hamburger')?.classList.remove('open');
     document.getElementById('nav-links')?.classList.remove('mobile-open');
     document.getElementById('mobile-sidebar-overlay')?.classList.remove('show');
+    document.body.style.overflow = '';
     closeMobileSidebar();
   }
   function toggleMobileSidebar() {
@@ -7559,12 +7571,14 @@
       sidebar.classList.add('mobile-open');
       overlay.classList.add('show');
       btn.textContent = '✕';
+      document.body.style.overflow = 'hidden';
     }
   }
   function closeMobileSidebar() {
     document.getElementById('sidebar')?.classList.remove('mobile-open');
     const btn = document.getElementById('sidebar-btn');
     if (btn) btn.textContent = '📋';
+    document.body.style.overflow = '';
   }
 
   // ===== WIZARD LOGIC =====
