@@ -261,6 +261,238 @@
   /* === CALCULADORA === */
   .calc-view { padding: 44px 56px; animation: fadeUp 0.5s ease forwards; }
   @media (max-width: 900px) { .calc-view { padding: 24px 20px; } .calc-body { grid-template-columns: 1fr !important; } }
+  /* ===== FASE 1: NAV + LAYOUT BASE RESPONSIVO ===== */
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--muted); border-radius: 2px; transition: all 0.3s ease; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--accent); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--accent); }
+
+  #mobile-sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 155; backdrop-filter: blur(2px); }
+  #mobile-sidebar-overlay.show { display: block; }
+
+  @media (max-width: 768px) {
+    /* NAV */
+    nav { padding: 0 20px; }
+    .nav-badge { display: none; }
+    .hamburger { display: flex; }
+    .nav-links {
+      position: fixed; top: 64px; right: 0; bottom: 0; width: 220px;
+      background: #0b1520; border-left: 1px solid var(--border);
+      flex-direction: column; gap: 0; padding: 20px 0;
+      transform: translateX(100%); transition: transform 0.3s ease;
+      z-index: 150;
+    }
+    .nav-links.mobile-open { transform: translateX(0); }
+    .nav-links a { padding: 14px 24px; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    /* Also add sidebar toggle button */
+    .sidebar-mobile-btn { display: flex; }
+
+    /* LAYOUT */
+    .app { grid-template-columns: 1fr; }
+    aside {
+      position: fixed; top: 64px; left: 0; bottom: 0; width: 85%; max-width: 300px;
+      transform: translateX(-100%); transition: transform 0.3s ease;
+      z-index: 160; overflow-y: auto;
+      background: #060d14;
+      border-right: 1px solid var(--border);
+      box-shadow: 4px 0 24px rgba(0,0,0,0.6);
+    }
+    aside.mobile-open { transform: translateX(0); }
+
+    /* App grid override: sidebar fora do fluxo no mobile */
+    .app { display: block !important; }
+
+    /* MAIN */
+    main { padding: 24px 20px; max-width: 100%; width: 100%; box-sizing: border-box; }
+  }
+
+  /* Sidebar toggle button (mobile only) */
+  .sidebar-mobile-btn {
+    display: none;
+    position: fixed; bottom: 24px; left: 24px; z-index: 140;
+    background: var(--accent); color: #050a0e;
+    border: none; border-radius: 50%; width: 52px; height: 52px;
+    font-size: 1.3rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0,229,195,0.35);
+    align-items: center; justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .sidebar-mobile-btn:hover { transform: scale(1.05); }
+  @media (max-width: 768px) { .sidebar-mobile-btn { display: flex; } }
+
+
+  /* ===== FASE 5: CALCULADORA RESPONSIVA ===== */
+  @media (max-width: 768px) {
+    .calc-view { padding: 24px 16px; }
+    .calc-title { font-size: 1.5rem; }
+    .calc-body { grid-template-columns: 1fr !important; gap: 16px; }
+    .calc-card { padding: 20px 16px; border-radius: 14px; }
+    .chips-grid { gap: 6px; }
+    .calc-chip-btn { font-size: 0.68rem; padding: 7px 11px; }
+    .calc-manual-wrap { flex-wrap: wrap; }
+    .calc-manual-input { font-size: 0.82rem; }
+    .calc-bac-row { flex-wrap: wrap; gap: 8px; }
+    .calc-result-row { flex-direction: column; gap: 2px; padding: 11px 0; }
+    .calc-result-value { font-size: 0.9rem; }
+    .calc-result-value.accent { font-size: 0.95rem; }
+    .calc-recon-row { flex-direction: column; gap: 1px; }
+    .calc-recon-val { font-size: 0.82rem; }
+    .calc-drop-item { font-size: 0.82rem; padding: 10px 14px; }
+  }
+
+  /* ===== FASE 5: GUIA DO INICIANTE RESPONSIVO ===== */
+  @media (max-width: 768px) {
+    #guide-tabs { padding: 12px 14px 0; gap: 6px; }
+    .guide-tab-btn { font-size: 0.68rem !important; padding: 7px 10px !important; border-radius: 8px; }
+    .guide-panel { padding: 20px 16px !important; }
+    .guide-content-grid { grid-template-columns: 1fr !important; gap: 16px; }
+    .guide-diagram { padding: 14px; }
+    .guide-compare { grid-template-columns: 1fr !important; gap: 10px; }
+    .guide-vias-grid { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+    .guide-storage-grid { grid-template-columns: 1fr !important; gap: 10px; }
+    .guide-safety-grid { grid-template-columns: 1fr !important; gap: 10px; }
+    .guide-calc-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .guide-calc-row input { width: 100% !important; box-sizing: border-box; }
+    .guide-calc-result { font-size: 0.78rem; }
+    .guide-steps { gap: 0; }
+    .guide-step { flex-direction: row !important; }
+    .guide-tip { font-size: 0.8rem; }
+    .guide-text h3 { font-size: 1rem; }
+    .guide-text p { font-size: 0.86rem; }
+  }
+
+  /* ===== EXTRA: PEPTIDE DETAIL COMPLETO ===== */
+  @media (max-width: 768px) {
+    /* Peptide page padding */
+    .peptide-page { padding: 0 !important; }
+    main { overflow-x: hidden; }
+
+    /* Quick stats 2 col */
+    .quick-stats { grid-template-columns: repeat(2, 1fr) !important; gap: 8px; }
+    .stat-card { padding: 14px 12px; }
+    .stat-val { font-size: 1.3rem; }
+    .stat-label { font-size: 0.65rem; }
+
+    /* Badges wrap */
+    .peptide-badges { flex-wrap: wrap; }
+
+    /* Refs */
+    .ref-item { font-size: 0.76rem; padding: 10px 12px; }
+
+    /* Warnings */
+    .warning-item { font-size: 0.8rem; padding: 11px 12px; }
+
+    /* Section blocks */
+    .section-block { margin-bottom: 24px; }
+
+    /* Tables mobile scroll */
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* Buttons full width on mobile */
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; justify-content: center; }
+
+    /* Home guide entry card */
+    .guide-entry-card { padding: 18px !important; }
+
+    /* Wz result cards 2 col */
+    #wz-result-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+    /* Protocol section in peptide detail */
+    .protocol-section { padding: 16px !important; }
+
+    /* Combo tags */
+    .combo-tag { font-size: 0.68rem; }
+  }
+
+  /* ===== TOUCH IMPROVEMENTS ===== */
+  @media (max-width: 768px) {
+    /* Bigger tap targets */
+    .peptide-item { padding: 10px 14px; min-height: 40px; }
+    .category-header { padding: 14px 16px !important; min-height: 48px; }
+    .wz-option { min-height: 60px; }
+    .calc-chip-btn { min-height: 36px; display: flex; align-items: center; justify-content: center; }
+
+    /* Prevent text overflow everywhere */
+    * { word-break: break-word; }
+    .home-title { word-break: normal; hyphens: auto; }
+
+    /* Smooth scrolling */
+    html { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+
+    /* No hover effects on touch */
+    .cat-card:hover { transform: none !important; box-shadow: none !important; }
+    .info-card:hover { border-color: var(--border) !important; }
+  }
+
+
+  /* ===== FASE 4: WIZARD RESPONSIVO ===== */
+  @media (max-width: 768px) {
+    #wizard-container { padding: 22px 18px; border-radius: 14px; }
+    #wz-options-grid.grid-2 { grid-template-columns: 1fr; }
+    #wz-options-grid.grid-3 { grid-template-columns: 1fr; }
+    .wz-option { padding: 14px 16px; gap: 12px; }
+    .wz-opt-icon { font-size: 1.4rem; }
+    .wz-opt-title { font-size: 0.88rem; }
+    .wz-opt-desc { font-size: 0.74rem; }
+    #wz-nav { flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    #wz-result-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .wz-result-card { padding: 14px; }
+  }
+
+  /* ===== FASE 3: PEPTIDE DETAIL VIEW RESPONSIVO ===== */
+  @media (max-width: 768px) {
+    .peptide-hero { margin-bottom: 24px; }
+    .peptide-badges { gap: 6px; }
+    .badge { font-size: 0.62rem; }
+    .peptide-summary { font-size: 0.88rem; }
+    .info-grid { grid-template-columns: 1fr; }
+    .benefits-grid { grid-template-columns: 1fr; }
+    .protocol-grid { grid-template-columns: 1fr; }
+    .quick-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .stat-card { padding: 14px; }
+    .stat-val { font-size: 1.4rem; }
+  }
+
+
+  /* ===== FASE 2: HOME RESPONSIVO ===== */
+  @media (max-width: 768px) {
+    .home-view { padding: 24px 20px; }
+    .home-hero { margin-bottom: 32px; }
+    .home-title { font-size: 2rem; letter-spacing: -1px; }
+    .home-sub { font-size: 0.92rem; max-width: 100%; }
+    .home-stats { gap: 24px; flex-wrap: wrap; margin-top: 24px; }
+    .hs-num { font-size: 1.5rem; }
+
+    /* Stats grid 4-col → 2x2 */
+    .quick-stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+    /* Cats grid 3-col → 1-col */
+    .cats-grid { grid-template-columns: 1fr; gap: 10px; margin-bottom: 28px; }
+    .cat-card { padding: 18px; }
+    .cat-card:hover { transform: none; }
+
+    /* Info grid 2-col → 1-col */
+    .info-grid { grid-template-columns: 1fr; gap: 10px; }
+
+    /* Benefits & protocol grids */
+    .benefits-grid { grid-template-columns: 1fr; }
+    .protocol-grid { grid-template-columns: 1fr; }
+
+    /* Section heading */
+    .section-heading { font-size: 0.95rem; }
+
+    /* Guide card */
+    .guide-entry-card { flex-direction: column; gap: 12px; }
+    .guide-content-grid { grid-template-columns: 1fr; gap: 16px; }
+    .guide-compare { grid-template-columns: 1fr; }
+    .guide-vias-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .guide-storage-grid { grid-template-columns: 1fr; gap: 10px; }
+    .guide-safety-grid { grid-template-columns: 1fr; gap: 10px; }
+    .guide-tabs { flex-wrap: wrap; gap: 6px; }
+    .guide-tab { font-size: 0.72rem; padding: 7px 12px; }
+  }
+
+
   .calc-header { margin-bottom: 36px; }
   .calc-title { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text); letter-spacing: -1px; margin-bottom: 8px; }
   .calc-sub { font-size: 0.9rem; color: var(--muted); }
@@ -324,6 +556,9 @@
   .disclaimer { margin-top: 20px; padding: 14px 18px; background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.2); border-radius: 10px; font-size: 0.76rem; color: #7a6a9a; line-height: 1.6; }
   .disclaimer strong { color: #9d77d4; }
   @keyframes fadeUp { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform: translateY(0); } }
+  /* GLOBAL OVERFLOW FIX */
+  html, body { overflow-x: hidden; max-width: 100%; }
+
   /* HOME */
   .home-view { padding: 44px 56px; animation: fadeUp 0.5s ease forwards; }
   .home-hero { margin-bottom: 48px; }
@@ -354,19 +589,26 @@
 <div class="glow-bg2"></div>
 
 <nav>
-  <div class="logo" onclick="showHome()">
+  <div class="logo" onclick="showHome();closeMobileMenu()">
     <div class="logo-dot"></div>
     PeptideX
   </div>
-  <div class="nav-links">
-    <a href="#" data-view="calc" onclick="showCalc();return false;">Calculadora</a>
-    <a href="#" class="active" data-view="home" onclick="showHome();return false;">Biblioteca</a>
+  <div class="nav-links" id="nav-links">
+    <a href="#" data-view="calc" onclick="showCalc();closeMobileMenu();return false;">Calculadora</a>
+    <a href="#" class="active" data-view="home" onclick="showHome();closeMobileMenu();return false;">Biblioteca</a>
   </div>
-  <div class="nav-badge">v1.0 BETA</div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="nav-badge">v1.0 BETA</div>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
+<div id="mobile-sidebar-overlay" onclick="closeMobileMenu()"></div>
 
+<button class="sidebar-mobile-btn" id="sidebar-btn" onclick="toggleMobileSidebar()" aria-label="Abrir lista">📋</button>
 <div class="app">
-<aside>
+<aside id="sidebar">
   <div class="sidebar-search">
     <span style="color:var(--muted);font-size:12px">🔍</span>
     <input type="text" placeholder="Buscar peptídeo..." oninput="filterPeptides(this.value)">
@@ -6437,6 +6679,7 @@
   }
 
   function showPeptide(id, el) {
+    closeMobileSidebar();
     document.getElementById('home-view').style.display = 'none';
     document.getElementById('compare-view').style.display = 'none';
     document.getElementById('calc-view').style.display = 'none';
@@ -7282,6 +7525,47 @@
     }
   });
 
+
+
+  // ===== MOBILE MENU / SIDEBAR =====
+  function toggleMobileMenu() {
+    const btn = document.getElementById('hamburger');
+    const links = document.getElementById('nav-links');
+    const overlay = document.getElementById('mobile-sidebar-overlay');
+    const isOpen = links.classList.contains('mobile-open');
+    if (isOpen) {
+      links.classList.remove('mobile-open');
+      btn.classList.remove('open');
+      overlay.classList.remove('show');
+    } else {
+      links.classList.add('mobile-open');
+      btn.classList.add('open');
+      overlay.classList.add('show');
+    }
+  }
+  function closeMobileMenu() {
+    document.getElementById('hamburger')?.classList.remove('open');
+    document.getElementById('nav-links')?.classList.remove('mobile-open');
+    document.getElementById('mobile-sidebar-overlay')?.classList.remove('show');
+    closeMobileSidebar();
+  }
+  function toggleMobileSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('mobile-sidebar-overlay');
+    const btn = document.getElementById('sidebar-btn');
+    if (sidebar.classList.contains('mobile-open')) {
+      closeMobileSidebar();
+    } else {
+      sidebar.classList.add('mobile-open');
+      overlay.classList.add('show');
+      btn.textContent = '✕';
+    }
+  }
+  function closeMobileSidebar() {
+    document.getElementById('sidebar')?.classList.remove('mobile-open');
+    const btn = document.getElementById('sidebar-btn');
+    if (btn) btn.textContent = '📋';
+  }
 
   // ===== WIZARD LOGIC =====
   const WZ = {
