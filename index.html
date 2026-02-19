@@ -293,7 +293,7 @@
     aside {
       position: fixed; top: 64px; left: 0; bottom: 0; width: 85%; max-width: 300px;
       transform: translateX(-100%); transition: transform 0.3s ease;
-      z-index: 200; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      z-index: 200; overflow-y: scroll; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
       background: #0e1c2a;
       border-right: 1px solid rgba(0,229,195,0.15);
       box-shadow: 6px 0 32px rgba(0,0,0,0.8);
@@ -591,6 +591,12 @@
     aside .sidebar-search input { color: #cde; }
     aside .sidebar-search input::placeholder { color: #557788; }
   }
+
+  body.menu-open { overflow: hidden; touch-action: none; }
+  body.menu-open main, body.menu-open #home-view, body.menu-open #peptide-view,
+  body.menu-open #calc-view { pointer-events: none; }
+  #sidebar { touch-action: pan-y; pointer-events: auto !important; }
+  #sidebar * { pointer-events: auto !important; }
 </style>
 </head>
 <body>
@@ -7537,6 +7543,15 @@
 
 
   // ===== MOBILE MENU / SIDEBAR =====
+
+  // Prevent body scroll when overlay is open (works on iOS too)
+  function lockBodyScroll() {
+    document.body.classList.add('menu-open');
+  }
+  function unlockBodyScroll() {
+    document.body.classList.remove('menu-open');
+  }
+
   function toggleMobileMenu() {
     const btn = document.getElementById('hamburger');
     const links = document.getElementById('nav-links');
@@ -7546,19 +7561,19 @@
       links.classList.remove('mobile-open');
       btn.classList.remove('open');
       overlay.classList.remove('show');
-      document.body.style.overflow = '';
+      unlockBodyScroll();
     } else {
       links.classList.add('mobile-open');
       btn.classList.add('open');
       overlay.classList.add('show');
-      document.body.style.overflow = 'hidden';
+      lockBodyScroll();
     }
   }
   function closeMobileMenu() {
     document.getElementById('hamburger')?.classList.remove('open');
     document.getElementById('nav-links')?.classList.remove('mobile-open');
     document.getElementById('mobile-sidebar-overlay')?.classList.remove('show');
-    document.body.style.overflow = '';
+    unlockBodyScroll();
     closeMobileSidebar();
   }
   function toggleMobileSidebar() {
@@ -7571,14 +7586,15 @@
       sidebar.classList.add('mobile-open');
       overlay.classList.add('show');
       btn.textContent = '✕';
-      document.body.style.overflow = 'hidden';
+      lockBodyScroll();
     }
   }
   function closeMobileSidebar() {
     document.getElementById('sidebar')?.classList.remove('mobile-open');
+    document.getElementById('mobile-sidebar-overlay')?.classList.remove('show');
     const btn = document.getElementById('sidebar-btn');
     if (btn) btn.textContent = '📋';
-    document.body.style.overflow = '';
+    unlockBodyScroll();
   }
 
   // ===== WIZARD LOGIC =====
